@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-
+from django.views.decorators.cache import cache_page
+from django.core.cache.backends.filebased import FileBasedCache
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -122,3 +123,19 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/path/to/your/cache/directory',  # Укажите путь к директории кэша
+        'TIMEOUT': 1200,  # Время жизни кэша в секундах (20 минут)
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000  # Максимальное количество записей в кэше
+        }
+    }
+}
+
+
+@cache_page(60 * 20)  # Кэшируем на 20 минут
+def my_view(request):
+    pass

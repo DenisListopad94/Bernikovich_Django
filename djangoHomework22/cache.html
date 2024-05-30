@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cache</title>
+</head>
+<body>
+% load cache %}
+{% cache 1200 some_cache_key %}
+<div>
+    <h1>Title will be cached</h1>
+    <p>text will be displayed 20 minutes</p>
+</div>
+{% endcache %}
+</body>
+</html>
