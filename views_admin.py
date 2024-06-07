@@ -2,10 +2,35 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from forms import CustomUserCreationForm, CustomAuthenticationForm
+from django.shortcuts import render
+from forms import UserProfileForm
+from forms import ProfileForm
+
+
+def create_profile(request):
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = UserProfileForm()
+    return render(request, 'create_profile.html', {'form': form})
+
+
+def update_profile(request):
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = ProfileForm()
+    return render(request, 'update_profile.html', {'form': form})
 
 
 @login_required
-def some_view(request):
+def some_view():
     #  только для аутентифицированных пользователей
     pass
 
@@ -56,5 +81,5 @@ def home_view(request):
     return render(request, 'home.html')
 
 
-def your_view(request):
+def my_view():
     return redirect('home')  # Перенаправление на домашнюю страницу

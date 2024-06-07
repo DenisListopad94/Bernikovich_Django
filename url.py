@@ -6,6 +6,8 @@ from django.urls import path
 from views import register, custom_login
 from django.urls import path
 from views import home_view
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('profile/', views.view_profile, name='profile'),
@@ -19,3 +21,6 @@ urlpatterns = [
     path('login/', custom_login, name='login'),
     path('home/', home_view, name='home'),
 ]
+
+urlpatterns = ['https://'
+               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,7 +1,31 @@
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib.contenttypes.models import ContentType
-from myapp.models import MyModel  # Импортируйте свою модель
+from myapp.models import MyModel
+from django.utils.html import format_html
+from django.contrib import admin
+from models import UserProfile, Hotel
 
+
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'display_avatar')
+
+    def display_avatar(self, obj):
+        return format_html('<img src="{}" width="50" height="50" />', obj.avatar.url)
+
+    display_avatar.short_description = 'Avatar'
+
+
+class HotelAdmin(admin.ModelAdmin):
+    list_display = ('name', 'display_photo')
+
+    def display_photo(self, obj):
+        return format_html('<img src="{}" width="50" height="50" />', obj.photo.url)
+
+    display_photo.short_description = 'Photo'
+
+
+admin.site.register(UserProfile, UserProfileAdmin)
+admin.site.register(Hotel, HotelAdmin)
 # Создание нового пользователя
 new_user = User.objects.create_user('username', 'email@username.com', 'password')
 new_user.save()
